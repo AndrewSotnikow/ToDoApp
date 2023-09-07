@@ -1,0 +1,11 @@
+READ:
+- https://senior.ua/articles/kiss-dry-solid-yagni--navscho-dotrimuvatis-principv-programuvannya
+- https://dmitripavlutin.com/javascript-modules-best-practices/
+- https://www.youtube.com/watch?v=TxZwqVTaCmA
+- https://www.youtube.com/watch?v=8Kti3fnmDPs&feature=youtu.be
+- https://github.com/airbnb/javascript
+
+PREPARE and CODE:
+- Learn materials above
+- Provide your examples of implementation SOLID principles in real life, at least first 2 principle S and O
+- Add eslint support to the todoApp project
