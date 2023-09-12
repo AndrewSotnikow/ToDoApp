@@ -6,4 +6,4 @@ function Test() {
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-root.render(<Test />);
+root.render(<Test />)

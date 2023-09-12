@@ -1,18 +1,18 @@
-import path from 'path';
-import webpack from 'webpack';
-import HTMLWebpackPlugin from "html-webpack-plugin";
+import path from 'path'
+import webpack from 'webpack'
+import HTMLWebpackPlugin from 'html-webpack-plugin'
 
 const config: webpack.Configuration = {
     mode: 'development',
     entry: path.resolve(__dirname, 'src', 'index.tsx'),
     output: {
-        filename: "[name].[contenthash].js",
+        filename: '[name].[contenthash].js',
         path: path.resolve(__dirname, 'build'),
-        clean: true
+        clean: true,
     },
     plugins: [
         new HTMLWebpackPlugin({
-            template: path.resolve(__dirname, 'public', 'index.html')
+            template: path.resolve(__dirname, 'public', 'index.html'),
         }),
         new webpack.ProgressPlugin(),
     ],
@@ -22,7 +22,7 @@ const config: webpack.Configuration = {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
                 exclude: /node_modules/,
-            }
+            },
         ],
     },
     resolve: {
@@ -30,4 +30,4 @@ const config: webpack.Configuration = {
     },
 }
 
-export default config;
+export default config
