@@ -1,0 +1,29 @@
+{
+  "dependencies": [
+    "#jest-common",
+    "#storybook-common"
+  ],
+  "packages": {
+    "@babel/preset-env": "^7.22.4",
+    "@babel/preset-react": "^7.22.3",
+    "@storybook/addon-actions": "^7.0.18",
+    "@storybook/addon-essentials": "^7.0.18",
+    "@storybook/addon-styling": "^1.0.8",
+    "@storybook/react": "^7.0.18",
+    "@storybook/react-webpack5": "^7.0.18",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@whitespace/storybook-addon-html": "^5.1.4",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.5.0",
+    "jsdom": "^22.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sass": "^1.62.1",
+    "storybook": "^7.0.18",
+    "styled-components": "^5.3.11",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}

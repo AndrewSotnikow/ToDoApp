@@ -1,0 +1,17 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx webpack",
+    "dev": "rm -rf frontend/.public/dist/* && npx webpack serve",
+    "eslint": "npx eslint --quiet .",
+    "start": "npx http-server frontend/.public -p 9000",
+    "stylelint": "npx stylelint \"**/*.{css,scss,sass,html}\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

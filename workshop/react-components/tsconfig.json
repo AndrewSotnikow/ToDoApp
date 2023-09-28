@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "#html/*": ["../html/*"],
+      "#components/hooks/*": ["./hooks/*"],
+      "#components/icons/*": ["./icons/*"],
+      "#components/storybook/*": ["./.storybook/*"],
+      "#components/connect/*": ["./connect/*"],
+      "#libraries/*": [
+        "../js-libraries/@browser/*",
+        "../js-libraries/*"
+      ],
+      "#packages/*": ["../js-packages/*"]
+    }
+  },
+  "exclude": [
+    "**/*.js",
+    "node_modules",
+    "tmp"
+  ],
+  "extends": "../js-packages/tsconfig.json"
+}

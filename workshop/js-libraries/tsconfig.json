@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "#libraries/@interfaces": ["./@interfaces/index.ts"],
+      "#libraries/@interfaces/components": ["./@interfaces/components/index.ts"],
+      "#libraries/*": ["./*"],
+      "#packages/*": ["../js-packages/*"]
+    }
+  },
+  "exclude": [
+    "**/*.js",
+    "node_modules",
+    "tmp"
+  ],
+  "extends": "../js-packages/tsconfig.json"
+}
