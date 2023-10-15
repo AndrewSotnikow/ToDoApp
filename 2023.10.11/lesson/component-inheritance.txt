@@ -1,0 +1,3 @@
+npm BASE ->  npm COMPANY SHARED  ->  npm COMPANY PROJECT - "video player"
+  Button ->  CompanyButton       ->  AppButton             ->  ToggleButton      -> PlayPauseButton
+  atoms  ->  company buttons     ->  project common button ->  button with state -> video player button
