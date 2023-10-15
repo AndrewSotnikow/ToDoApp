@@ -59,6 +59,9 @@ dependencies:
   postcss-preset-env:
     specifier: ^9.1.4
     version: 9.1.4(postcss@8.4.30)
+  postcss-sass:
+    specifier: ^0.5.0
+    version: 0.5.0
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -2794,6 +2797,14 @@ packages:
     resolution: {integrity: sha512-xYfnw62CKG8nLkZBfWbhWwDw02CHty86jfPcc2cr3ZfeuK9ysoVPPEUxf21bAD/rWAgk52SuBrLJlefNy8mvFg==}
     dev: false
 
+  /gonzales-pe@4.3.0:
+    resolution: {integrity: sha512-otgSPpUmdWJ43VXyiNgEYE4luzHCL2pz4wQ0OnDluC6Eg4Ko3Vexy/SrSynglw/eR+OhkzmqFCZa/OFa/RgAOQ==}
+    engines: {node: '>=0.6.0'}
+    hasBin: true
+    dependencies:
+      minimist: 1.2.8
+    dev: false
+
   /gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
     dependencies:
@@ -4284,6 +4295,14 @@ packages:
     peerDependencies:
       postcss: ^8.3.3
     dependencies:
+      postcss: 8.4.30
+    dev: false
+
+  /postcss-sass@0.5.0:
+    resolution: {integrity: sha512-qtu8awh1NMF3o9j/x9j3EZnd+BlF66X6NZYl12BdKoG2Z4hmydOt/dZj2Nq+g0kfk2pQy3jeYFBmvG9DBwynGQ==}
+    engines: {node: ^10 || ^12 || >=14}
+    dependencies:
+      gonzales-pe: 4.3.0
       postcss: 8.4.30
     dev: false
 

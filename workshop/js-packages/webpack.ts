@@ -1,35 +1,19 @@
 import { CallableOption, WebpackConfiguration } from 'webpack-cli/lib/types';
-import { ModuleOptions, Compiler as WebpackCompiler } from 'webpack';
-import TerserPlugin from 'terser-webpack-plugin';
+// import { Compiler as WebpackCompiler } from 'webpack';
+// import TerserPlugin from 'terser-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ReactRefreshTypeScript from 'react-refresh-typescript';
 import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 
-type LoaderType = 'typescript-file' | 'style-file';
-
-export const getLoaderIndex = (
-  type: LoaderType,
-  rules: ModuleOptions['rules'],
-): number => {
-  return (rules || []).findIndex((rule) => {
-    return Object.getOwnPropertySymbols(rule).some((symbol) => {
-      return symbol.toString() === 'Symbol(webpack-rule-name)' && (rule as any)[symbol] === type;
-    });
-  });
-};
+// type LoaderType = 'typescript-file' | 'style-file';
 
 export const getDefaultConfig = (
   env: Parameters<CallableOption>[0],
-  mode: string,
+  // mode: string,
 ): WebpackConfiguration => {
   return {
     resolve: {
-      extensions: ['.ts', '.tsx', '.js'],
-    },
-    optimization: {
-      minimizer: [
-        new TerserPlugin({ extractComments: false }),
-      ],
+      extensions: ['.ts', '.tsx', '.js', '.jsx'],
     },
     devServer: {
       hot: true,
@@ -38,7 +22,6 @@ export const getDefaultConfig = (
     module: {
       rules: [
         {
-          [Symbol('webpack-rule-name')]: 'typescript-file',
           test: /\.tsx?$/,
           use: [
             {
@@ -55,7 +38,6 @@ export const getDefaultConfig = (
           ],
         },
         {
-          [Symbol('webpack-rule-name')]: 'style-file',
           test: /\.(s[ac]ss|css)$/i,
           use: [
             env?.WEBPACK_SERVE ? 'style-loader' : MiniCssExtractPlugin.loader,
@@ -71,15 +53,6 @@ export const getDefaultConfig = (
       !env?.WEBPACK_SERVE && new MiniCssExtractPlugin({
         filename: '[name].css',
       }),
-      {
-        apply(compiler: WebpackCompiler) {
-          compiler.hooks.done.tap('webpackOnDone', () => {
-            setTimeout(() => {
-              console.log(`===> [${mode}] done`);
-            }, 0);
-          });
-        },
-      },
     ].filter(Boolean),
   } as WebpackConfiguration;
 };

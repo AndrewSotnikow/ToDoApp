@@ -16,10 +16,7 @@ const html = [
       '@html-eslint/indent': ['error', 2],
     },
   },
-].map((v) => ({
-  ...v,
-  [Symbol('eslint-category')]: 'html',
-}));
+];
 
 const json = [
   {
@@ -39,10 +36,7 @@ const json = [
       'jsonc/sort-keys': 0,
     },
   },
-].map((v) => ({
-  ...v,
-  [Symbol('eslint-category')]: 'json',
-}));
+];
 
 const js = [
   {
@@ -51,10 +45,7 @@ const js = [
       'import/no-dynamic-require': 0,
     },
   },
-].map((v) => ({
-  ...v,
-  [Symbol('eslint-category')]: 'js',
-}));
+];
 
 const typescript = [
   {
@@ -82,10 +73,7 @@ const typescript = [
       },
     },
   },
-].map((v) => ({
-  ...v,
-  [Symbol('eslint-category')]: 'typescript',
-}));
+];
 
 module.exports = {
   root: true,
