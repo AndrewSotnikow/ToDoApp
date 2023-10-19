@@ -1,18 +1,18 @@
-import {ChangeEvent, forwardRef} from "react"
-import { InputProps, InputRef } from './types'
+import { ChangeEvent, forwardRef } from 'react';
+import { InputProps, InputRef } from './types';
 
-export const Input = forwardRef<InputRef, InputProps>((
-  props, ref) => {
+export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const {
-    type = "text",
-    value =  '',
+    type = 'text',
+    value = '',
     onChange = () => null,
     name = '',
     id = '',
     native = {},
-    placeholder = '' } = props
+    placeholder = '',
+  } = props;
 
-  return(
+  return (
     <input
       ref={ref}
       {...native}
@@ -24,5 +24,5 @@ export const Input = forwardRef<InputRef, InputProps>((
       onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
       className="input"
     />
-  )
-})
+  );
+});
