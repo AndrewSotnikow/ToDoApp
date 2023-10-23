@@ -1,27 +1,24 @@
-import { ChangeEvent, forwardRef } from 'react';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { InputProps, InputRef } from './types';
 
 export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const {
-    type = 'text',
-    value = '',
-    onChange = () => null,
-    name = '',
-    id = '',
     native = {},
-    placeholder = '',
   } = props;
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useImperativeHandle(ref, () => {
+    return {
+      inputRef,
+    };
+  });
 
   return (
     <input
-      ref={ref}
+      ref={inputRef}
       {...native}
-      type={type}
-      value={value}
-      name={name}
-      placeholder={placeholder}
-      id={id}
-      onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
+      type="text"
       className="input"
     />
   );
