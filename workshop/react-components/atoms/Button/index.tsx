@@ -1,6 +1,7 @@
 import {
   PropsWithChildren, forwardRef, useRef, useImperativeHandle,
 } from 'react';
+import { createClassName } from '#libraries/dom/createClassName';
 import { ButtonProps, ButtonRefs } from './types';
 import './styles.sass';
 
@@ -22,7 +23,11 @@ export const Button = forwardRef<ButtonRefs, PropsWithChildren<ButtonProps>>(({
     <button
       {...native}
       ref={buttonRef}
-      className="button"
+      className={createClassName([
+        'button',
+        native?.disabled ? 'button--disabled' : '',
+        native?.disabled ? 'disabled' : '',
+      ])}
     >
       <>
         {iconPosition === 'left' && { icon }}
