@@ -1,8 +1,14 @@
-import { ButtonHTMLAttributes, ReactNode, MutableRefObject } from 'react';
+import {
+  ButtonHTMLAttributes,
+  ReactNode,
+  MutableRefObject,
+} from 'react';
+
+export type IconDirection = 'left' | 'right';
 
 export type ButtonProps = {
   icon?: ReactNode;
-  iconPosition?: 'left' | 'right';
+  iconPosition?: IconDirection;
   native?: ButtonHTMLAttributes<HTMLButtonElement>;
 };
 

@@ -1,39 +1,85 @@
 import {
-  PropsWithChildren, forwardRef, useRef, useImperativeHandle,
+  useRef,
+  useCallback,
+  forwardRef,
+  useImperativeHandle,
+  PropsWithChildren,
 } from 'react';
 import { createClassName } from '#libraries/dom/createClassName';
-import { ButtonProps, ButtonRefs } from './types';
+import { createNameSpace } from '#libraries/dom/createNameSpace';
+import type {
+  ButtonRefs,
+  ButtonProps,
+  IconDirection,
+} from './types';
 import './styles.sass';
 
 export const Button = forwardRef<ButtonRefs, PropsWithChildren<ButtonProps>>(({
-  native = {},
-  icon = null,
-  iconPosition = 'left',
   children,
+  icon,
+  iconPosition = 'left',
+  native = {},
 }, ref) => {
+  const { disabled = false } = native;
+
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
-  useImperativeHandle(ref, () => {
-    return {
-      buttonRef,
-    };
-  });
+  useImperativeHandle(ref, () => ({
+    get buttonRef() {
+      return buttonRef;
+    },
+  }));
+
+  const getIcon = useCallback((
+    position: IconDirection,
+    isDisabled?: boolean,
+  ) => {
+    if (!icon) {
+      return null;
+    }
+    return (
+      <span
+        aria-hidden={true}
+        role="presentation"
+        className={createClassName([
+          ns('icon-wrapper', 'icon').value,
+          ns.icon(position).value,
+        ])}
+        onClick={(e) => {
+          if (isDisabled) {
+            e.stopPropagation();
+            e.preventDefault();
+          }
+        }}
+      >
+        {icon}
+      </span>
+    );
+  }, [icon]);
 
   return (
     <button
-      {...native}
       ref={buttonRef}
+      {...native}
       className={createClassName([
-        'button',
-        native?.disabled ? 'button--disabled' : '',
-        native?.disabled ? 'disabled' : '',
+        ns().root,
+        ...(disabled ? [ns.input('disabled').value, 'disabled'] : []),
+        native.className || '',
       ])}
     >
-      <>
-        {iconPosition === 'left' && { icon }}
+      {iconPosition === 'left' && getIcon(iconPosition, disabled)}
+      <div
+        role="presentation"
+        aria-hidden={true}
+        className={createClassName([
+          ns('content').value,
+        ])}
+      >
         {children}
-        {iconPosition === 'right' && { icon }}
-      </>
+      </div>
+      {iconPosition === 'right' && getIcon(iconPosition, disabled)}
     </button>
   );
 });
+
+const ns = createNameSpace(Object.keys({ Button })[0]);
