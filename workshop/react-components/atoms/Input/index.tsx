@@ -1,7 +1,10 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { InputProps, InputRef } from './types';
-// import { debounce } from "#libraries/helpers/debounce";
+
 import { createClassName } from '#libraries/dom/createClassName';
+import { debounce } from '#libraries/@core/helpers/debounce'
+import { createNameSpace } from '#libraries/@core/dom/createNameSpace'
+
 
 // TODO
 // continue develop component
@@ -10,9 +13,9 @@ import { createClassName } from '#libraries/dom/createClassName';
 export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const {
     native = {},
-    // debounceMs
+    debounceMs= 0
   } = props;
-
+  const { disabled = false, checked  = false } = native;
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useImperativeHandle(ref, () => {
@@ -25,15 +28,15 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
     <input
       ref={inputRef}
       {...native}
-      onChange={(e) => {
-        native?.onChange?.(e);
-      }}
+      onChange={(e) => debounce(()=> native?.onChange?.(e), debounceMs)}
       type="text"
       className={createClassName([
-        'input',
-        native?.disabled ? 'input--disabled' : '',
-        native.checked ? 'input--checked' : '',
+        ns().root,
+        ...(disabled ? [ns.input('disabled').value, 'disabled'] : []),
+        ...(checked ? [ns.input('checked').value, 'checked'] : []),
       ])}
     />
   );
 });
+
+const ns = createNameSpace(Object.keys({ Input })[0]);
