@@ -1,5 +1,5 @@
 import {
-  forwardRef, useImperativeHandle, useRef, useState, useEffect, CSSProperties,
+  forwardRef, useImperativeHandle, useRef, useState, useEffect, CSSProperties, ChangeEvent,
 } from 'react';
 import { InputProps, InputRef } from './types';
 import { createClassName } from '#libraries/dom/createClassName';
@@ -24,7 +24,7 @@ const virtualInputStyles: CSSProperties = {
 export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const {
     native = {},
-    // debounceMs = 0,
+    debounceMs = 0,
   } = props;
   const { disabled = false, value = '', checked = false } = native;
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -45,15 +45,22 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
       return () => {};
     }
     setIsDynamicWidth(true);
+    const virtualInput = virtualInputRef.current;
+    const computedInputStyles = {} as any;
 
-    // TODO finish
-    virtualInput.style.fontSize = computedInputStyles.fontSize;
-    virtualInput.style.fontFamily = computedInputStyles.fontFamily;
-    virtualInput.style.fontStyle = computedInputStyles.fontStyle;
-    virtualInput.style.letterSpacing = computedInputStyles.letterSpacing;
-    virtualInput.style.textTransform = computedInputStyles.textTransform;
-    virtualInput.style.fontWeight = computedInputStyles.fontWeight;
+    if (virtualInput) {
+      // TODO finish
+      virtualInput.style.fontSize = computedInputStyles.fontSize;
+      virtualInput.style.fontFamily = computedInputStyles.fontFamily;
+      virtualInput.style.fontStyle = computedInputStyles.fontStyle;
+      virtualInput.style.letterSpacing = computedInputStyles.letterSpacing;
+      virtualInput.style.textTransform = computedInputStyles.textTransform;
+      virtualInput.style.fontWeight = computedInputStyles.fontWeight;
+    }
+    
   }, [isDynamicWidth]);
+
+const handleInputOnChangeWithDebounce = (e: ChangeEvent<HTMLInputElement>) => debounce(()=> native?.onChange?.(e), debounceMs)
 
   return (
     <>
