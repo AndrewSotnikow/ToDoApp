@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useImperativeHandle, useRef, ChangeEvent } from 'react';
 import { InputProps, InputRef } from './types';
 
 import { createClassName } from '#libraries/dom/createClassName';
@@ -24,11 +24,13 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
     };
   });
 
+const handleInputOnChangeWithDebounce = (e:  ChangeEvent<HTMLInputElement>) => debounce(()=> native?.onChange?.(e), debounceMs)
+
   return (
     <input
       ref={inputRef}
       {...native}
-      onChange={(e) => debounce(()=> native?.onChange?.(e), debounceMs)}
+      onChange={handleInputOnChangeWithDebounce}
       type="text"
       className={createClassName([
         ns().root,
