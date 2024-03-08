@@ -1,15 +1,10 @@
 import { CallableOption, WebpackConfiguration } from 'webpack-cli/lib/types';
-// import { Compiler as WebpackCompiler } from 'webpack';
-// import TerserPlugin from 'terser-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ReactRefreshTypeScript from 'react-refresh-typescript';
 import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 
-// type LoaderType = 'typescript-file' | 'style-file';
-
 export const getDefaultConfig = (
   env: Parameters<CallableOption>[0],
-  // mode: string,
 ): WebpackConfiguration => {
   return {
     resolve: {

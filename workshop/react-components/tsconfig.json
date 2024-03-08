@@ -3,10 +3,6 @@
     "baseUrl": ".",
     "paths": {
       "#html/*": ["../html/*"],
-      "#components/hooks/*": ["./hooks/*"],
-      "#components/icons/*": ["./icons/*"],
-      "#components/storybook/*": ["./.storybook/*"],
-      "#components/connect/*": ["./connect/*"],
       "#libraries/*": [
         "../js-libraries/@browser/*",
         "../js-libraries/*"

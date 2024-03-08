@@ -1,5 +1,4 @@
 // npx jest -i atoms/Button/test.ts
-import { ReactElement } from 'react';
 import { sleep } from '#libraries/async/sleep';
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
@@ -9,7 +8,9 @@ import { Button } from '.';
 const glob = global as any;
 
 describe('Button tests', () => {
-  const getButtonByText = (text: string) => screen.getByText(text).closest('button') as HTMLButtonElement;
+  const getButtonByText = (text: string) => screen.getByText(
+    text,
+  ).closest('button') as HTMLButtonElement;
 
   let container: HTMLDivElement;
 
@@ -54,4 +55,11 @@ describe('Button tests', () => {
     expect(onClick.mock.calls.length).toEqual(1);
     expect(Array.from(button.classList).includes('disabled')).not.toEqual(true);
   });
+
+  // TODO develop test
+  test('disabled test', () => {});
+
+  test('icon test', () => {});
+
+  test('icon position test', () => {});
 });

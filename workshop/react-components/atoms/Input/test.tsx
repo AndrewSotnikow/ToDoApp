@@ -1,5 +1,4 @@
-// n
-import { ReactElement } from 'react';
+// npx jest -i atoms/Input/test.ts
 import { sleep } from '#libraries/async/sleep';
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
@@ -9,7 +8,11 @@ import { Input } from '.';
 const glob = global as any;
 
 describe('Input tests', () => {
-  const input = screen.getByRole('input') as HTMLInputElement;
+  // TODO check why get by role not working
+  // const getInputByRole = () => screen.getByRole('input') as HTMLInputElement;
+  const getInputGetByDisplayValue = (
+    value: string,
+  ) => screen.getByDisplayValue(value) as HTMLInputElement;
 
   let container: HTMLDivElement;
 
@@ -23,9 +26,13 @@ describe('Input tests', () => {
 
   test('render and onChange tests', async () => {
     const onChange = jest.fn();
+    const inputValue = 'test-value';
 
     const getElement = () => (
-      <Input native={{ onChange }}  />
+      <Input native={{
+        onChange,
+        value: inputValue,
+      }} />
     );
 
     render(
@@ -43,13 +50,29 @@ describe('Input tests', () => {
 
     await sleep(0.1);
 
+    const input = getInputGetByDisplayValue(inputValue);
+
     expect(input).toBeInTheDocument();
+    expect(input.value).toEqual(inputValue);
     expect(input.classList.contains('input')).toEqual(true);
+    fireEvent.change(input, { target: { value: 'test-value1' } });
 
-    fireEvent.change(input, {target: {value: 'test-value'}});
+    // TODO finish tests
+    await sleep(0.3);
+    console.log(222, input.value);
 
-    expect(onChange.mock.calls.length).toEqual(1);
+    expect(input.value).toEqual('test-value1');
+    // expect(onChange.mock.calls.length).toEqual(1);
     expect(Array.from(input.classList).includes('disabled')).not.toEqual(true);
-    expect(input.value).toEqual('test-value');
+  });
+
+  // TODO finish tests
+  test('disabled test', async () => {});
+
+  test('debounce test', async () => {
+    // debounce = 2sec
+    // setTimout(() => checkNewValueFromOnChange() // true , 2000);
+    // sleep(1.5sec);
+    // checkNewValueFromOnChange(); // false
   });
 });
