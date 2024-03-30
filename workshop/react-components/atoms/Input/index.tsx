@@ -26,7 +26,7 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
     native = {},
     debounceMs = 0,
   } = props;
-  const { disabled = false, value = '', checked = false } = native;
+  const { disabled = false, value = '', checked = false, onChange } = native;
   const inputRef = useRef<HTMLInputElement | null>(null);
   const virtualInputRef = useRef<HTMLSpanElement | null>(null);
   const [inputValue, setInputValue] = useState<string>(value as string);
@@ -57,10 +57,13 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
       virtualInput.style.textTransform = computedInputStyles.textTransform;
       virtualInput.style.fontWeight = computedInputStyles.fontWeight;
     }
-    
+
   }, [isDynamicWidth]);
 
-const handleInputOnChangeWithDebounce = (e: ChangeEvent<HTMLInputElement>) => debounce(()=> native?.onChange?.(e), debounceMs)
+const handleInputOnChangeWithDebounce = (e: ChangeEvent<HTMLInputElement>) => debounce(()=> {
+  setInputValue(e.target.value)
+  onChange?.(e)
+}, debounceMs)
 
   return (
     <>
@@ -71,10 +74,7 @@ const handleInputOnChangeWithDebounce = (e: ChangeEvent<HTMLInputElement>) => de
         aria-hidden={ariaHidden}
         // TODO debounce not working with fire event in tests
         // onChange={(e) => debounce(() => native?.onChange?.(e), debounceMs)}
-        onChange={(e) => {
-          setInputValue(e.target.value);
-          native?.onChange?.(e);
-        }}
+        onChange={handleInputOnChangeWithDebounce}
         type="text"
         value={inputValue}
         className={createClassName([

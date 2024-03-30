@@ -63,11 +63,54 @@ describe('Input tests', () => {
 
     expect(input.value).toEqual('test-value1');
     // expect(onChange.mock.calls.length).toEqual(1);
+    expect(input.value).toEqual('test-value1');
     expect(Array.from(input.classList).includes('disabled')).not.toEqual(true);
   });
 
   // TODO finish tests
-  test('disabled test', async () => {});
+  test('disabled test', async () => {
+    const onChange = jest.fn();
+    const inputValue = 'test-value';
+
+    const getElement = () => (
+      <Input native={{
+        disabled: true,
+        onChange,
+        value: inputValue,
+      }} />
+    );
+
+    render(
+      getElement(),
+      {
+        hydrate: true,
+        container: glob.runInServerEnv(
+          () => {
+            container.innerHTML = renderToString(getElement());
+            return container;
+          },
+        ),
+      },
+    );
+
+    await sleep(0.1);
+
+    const input = getInputGetByDisplayValue(inputValue);
+
+    expect(input).toBeInTheDocument();
+    expect(input.value).toEqual(inputValue);
+    expect(input.classList.contains('input')).toEqual(true);
+    fireEvent.change(input, { target: { value: 'test-value1' } });
+
+    // TODO finish tests
+    await sleep(0.3);
+    console.log(222, input.value);
+
+    expect(input.value).toEqual('test-value1');
+    // expect(onChange.mock.calls.length).toEqual(1);
+    expect(input.value).not.toEqual('test-value1');
+    expect(Array.from(input.classList).includes('disabled')).toEqual(true);
+  });
 
   test('debounce test', async () => {
     // debounce = 2sec
