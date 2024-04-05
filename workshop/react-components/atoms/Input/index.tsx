@@ -1,11 +1,22 @@
 import {
-  forwardRef, useImperativeHandle, useRef, useState, useEffect, CSSProperties, ChangeEvent,
+  CSSProperties,
+  ChangeEvent,
+  KeyboardEvent,
+  forwardRef,
+  useCallback,
+  useRef,
+  useState,
+  useImperativeHandle,
+  useEffect,
+  useMemo,
 } from 'react';
-import { InputProps, InputRef } from './types';
 import { createClassName } from '#libraries/dom/createClassName';
-import { debounce } from '#libraries/@core/helpers/debounce';
-import { createNameSpace } from '#libraries/@core/dom/createNameSpace';
+import { createNameSpace } from '#libraries/dom/createNameSpace';
 import { getElementWidthWithoutPaddings } from '#libraries/dom/getElementWidthWithoutPaddings';
+import type { InputRefs, InputProps } from './types';
+import { usePrevious } from '#components/hooks/usePrevious';
+import { debounce } from '#libraries/timings/debounce';
+import './styles.sass';
 
 const virtualInputStyles: CSSProperties = {
   position: 'absolute',
@@ -17,75 +28,125 @@ const virtualInputStyles: CSSProperties = {
   whiteSpace: 'pre',
 };
 
-// TODO
-// continue develop component
-// add debounce
-// add createNameSpace
-export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
+export const Input = forwardRef<InputRefs, InputProps>(({
+  native = {},
+  debounceMs = 0,
+}, ref) => {
   const {
-    native = {},
-    debounceMs = 0,
-  } = props;
-  const { disabled = false, value = '', checked = false, onChange } = native;
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const virtualInputRef = useRef<HTMLSpanElement | null>(null);
-  const [inputValue, setInputValue] = useState<string>(value as string);
-  const [isDynamicWidth, setIsDynamicWidth] = useState<boolean>(false);
+    disabled, onChange, value, onKeyDown,
+  } = native;
 
-  useImperativeHandle(ref, () => ({
-    inputRef,
-  }));
+  const inputRef = useRef<HTMLInputElement>(null);
+  const virtualInputRef = useRef<HTMLInputElement>(null);
 
-  const ariaHidden = typeof native['aria-hidden'] !== 'undefined'
-    ? native['aria-hidden']
-    : disabled;
+  const [inputValue, setInputValue] = useState<string>(value ? String(value) : '');
+  const [isDynamicWidth, setIsDynamicWidth] = useState(false);
+  const previousValue = usePrevious(value);
+
+  useImperativeHandle(ref, () => ({ inputRef, virtualInputRef, setValue: setInputValue }));
+
+  const debouncedOnChange = useMemo(
+    () => debounce(onChange || (() => {}), debounceMs),
+    [debounceMs, onChange],
+  );
+
+  const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+    debouncedOnChange(e);
+  }, [debouncedOnChange]);
+
+  const onKeyDownHandler = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
+    if (onKeyDown) {
+      onKeyDown(e);
+      return;
+    }
+    if (e.key === 'Enter') {
+      inputRef.current!.blur();
+    }
+  }, [onKeyDown]);
 
   useEffect(() => {
     if (getElementWidthWithoutPaddings(inputRef.current) > 0) {
       return () => {};
     }
     setIsDynamicWidth(true);
-    const virtualInput = virtualInputRef.current;
-    const computedInputStyles = {} as any;
 
-    if (virtualInput) {
-      // TODO finish
-      virtualInput.style.fontSize = computedInputStyles.fontSize;
-      virtualInput.style.fontFamily = computedInputStyles.fontFamily;
-      virtualInput.style.fontStyle = computedInputStyles.fontStyle;
-      virtualInput.style.letterSpacing = computedInputStyles.letterSpacing;
-      virtualInput.style.textTransform = computedInputStyles.textTransform;
-      virtualInput.style.fontWeight = computedInputStyles.fontWeight;
+    if (!virtualInputRef.current) {
+      return () => {};
     }
+    const virtualInput = virtualInputRef.current;
+    const input = inputRef.current as HTMLInputElement;
+    const computedInputStyles = window.getComputedStyle(input, null);
 
+    virtualInput.style.fontSize = computedInputStyles.fontSize;
+    virtualInput.style.fontFamily = computedInputStyles.fontFamily;
+    virtualInput.style.fontStyle = computedInputStyles.fontStyle;
+    virtualInput.style.letterSpacing = computedInputStyles.letterSpacing;
+    virtualInput.style.textTransform = computedInputStyles.textTransform;
+    virtualInput.style.fontWeight = computedInputStyles.fontWeight;
+
+    const observer = new ResizeObserver(() => {
+      input.style.width = `${virtualInput.getBoundingClientRect().width}px`;
+    });
+    observer.observe(virtualInput);
+
+    return () => observer.disconnect();
   }, [isDynamicWidth]);
 
-const handleInputOnChangeWithDebounce = (e: ChangeEvent<HTMLInputElement>) => debounce(()=> {
-  setInputValue(e.target.value)
-  onChange?.(e)
-}, debounceMs)
+  useEffect(() => {
+    if (
+      typeof previousValue !== 'undefined'
+      && previousValue !== value
+      && String(inputValue).trim() !== String(value).trim()
+    ) {
+      setInputValue(String(value));
+    }
+  }, [value, previousValue, inputValue]);
+
+  const ariaDisabled = typeof native['aria-disabled'] !== 'undefined'
+    ? native['aria-disabled']
+    : disabled;
+
+  const isEmpty = inputValue.trim().length < 1;
 
   return (
     <>
       <input
         ref={inputRef}
-        autoComplete="off"
         {...native}
-        aria-hidden={ariaHidden}
-        // TODO debounce not working with fire event in tests
-        // onChange={(e) => debounce(() => native?.onChange?.(e), debounceMs)}
-        onChange={handleInputOnChangeWithDebounce}
         type="text"
-        value={inputValue}
+        autoComplete="off"
+        aria-disabled={ariaDisabled}
         className={createClassName([
           ns().root,
-          ...(disabled ? [ns.input('disabled').value, 'disabled'] : []),
-          ...(checked ? [ns.input('checked').value, 'checked'] : []),
+          disabled ? ns('disabled').value : '',
+          disabled ? 'disabled' : '',
+          isEmpty ? ns('empty').value : '',
+          native.className || '',
         ])}
+        onBlur={(e) => {
+          setInputValue(inputValue.trim());
+          native?.onBlur?.(e);
+        }}
+        onChange={onChangeHandler}
+        onKeyDown={onKeyDownHandler}
+        value={inputValue}
       />
-      {isDynamicWidth && <span ref={virtualInputRef} style={virtualInputStyles}>
-        {inputValue}
-      </span>}
+      {isDynamicWidth && (
+        <span
+          role="presentation"
+          aria-hidden={true}
+          ref={virtualInputRef}
+          className={createClassName([
+            ns('virtual-input', 'virtual').value,
+            disabled ? ns.virtual('disabled').value : '',
+            native.className || '',
+          ])}
+          style={virtualInputStyles}
+        >
+          {inputValue}
+        </span>
+      )}
     </>
   );
 });

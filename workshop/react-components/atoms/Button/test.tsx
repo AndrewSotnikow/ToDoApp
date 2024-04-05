@@ -1,4 +1,4 @@
-// npx jest -i atoms/Button/test.ts
+// npx jest -i atoms/Button/test.tsx
 import { sleep } from '#libraries/async/sleep';
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
@@ -11,7 +11,6 @@ describe('Button tests', () => {
   const getButtonByText = (text: string) => screen.getByText(
     text,
   ).closest('button') as HTMLButtonElement;
-  const onClick = jest.fn();
   let container: HTMLDivElement;
 
   beforeEach(() => {
@@ -23,8 +22,7 @@ describe('Button tests', () => {
   });
 
   test('render and click tests', async () => {
-
-
+    const onClick = jest.fn();
     const getElement = () => (
       <Button native={{ onClick }}>
         test-button
@@ -56,8 +54,7 @@ describe('Button tests', () => {
     expect(Array.from(button.classList).includes('disabled')).not.toEqual(true);
   });
 
-  // TODO develop test
-  test('disabled test', () => {
+  test('disabled test', async () => {
     const onClick = jest.fn();
 
     const getElement = () => (
@@ -81,19 +78,16 @@ describe('Button tests', () => {
 
     await sleep(0.1);
 
-
     const button = getButtonByText('test-button');
-    const icon = screen.getByText('test-icon') as HTMLSpanElement;
     expect(button.classList.contains('button')).toEqual(true);
 
     fireEvent.click(button);
 
     expect(onClick.mock.calls.length).toEqual(0);
     expect(Array.from(button.classList).includes('disabled')).toEqual(true);
-
   });
 
-  test('icon test', () => {
+  test('icon test', async () => {
     const onClick = jest.fn();
 
     const getElement = () => (
@@ -117,22 +111,21 @@ describe('Button tests', () => {
 
     await sleep(0.1);
 
-
-    const button = getButtonByText('test-button');
-    const icon = screen.getByText('test-icon');
-    expect(button).toBeInTheDocument(); // do I need to check it here?
+    const icon = screen.getByText('test-icon')?.closest('span') as HTMLSpanElement;
     expect(icon).toBeInTheDocument();
-    expect(icon.classList.contains('icon-wrapper')).toEqual(true);
+    expect(icon.classList.contains('button--icon-wrapper')).toEqual(true);
   });
 
-  test('icon position test', () => {
+  test('icon position test', async () => {
     const getElement = () => (
-      <Button native={{ onClick }} iconPosition='right' icon={<>test-icon</>}>
+      <Button
+        icon={<label>icon-test</label>}
+      >
         test-button
       </Button>
     );
 
-    render(
+    const { rerender } = render(
       getElement(),
       {
         hydrate: true,
@@ -147,12 +140,16 @@ describe('Button tests', () => {
 
     await sleep(0.1);
 
+    let buttonIconWrapper = screen.getByText('icon-test').closest('.button--icon-wrapper')!;
+    expect(buttonIconWrapper).toBeInTheDocument();
+    expect(buttonIconWrapper).toHaveClass('button--icon-wrapper--left');
+    expect(buttonIconWrapper.nextSibling).toHaveClass('button--content');
 
-    const button = getButtonByText('test-button');
-    const icon = screen.getByText('test-icon') as HTMLSpanElement;
-    expect(button).toBeInTheDocument();
-    expect(icon).toBeInTheDocument(); // do I  need to check it here?
-    expect(icon.classList.contains('icon-wrapper')).toEqual(true);
-    expect(icon.classList.contains('icon--right')).toEqual(true); // not sure about the class concatenation
+    rerender(<Button icon={<label>icon-test</label>} iconPosition="right">test-button</Button>);
+
+    buttonIconWrapper = screen.getByText('icon-test').closest('.button--icon-wrapper')!;
+    expect(buttonIconWrapper).toBeInTheDocument();
+    expect(buttonIconWrapper).toHaveClass('button--icon-wrapper--right');
+    expect(buttonIconWrapper.previousSibling).toHaveClass('button--content');
   });
 });

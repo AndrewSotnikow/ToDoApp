@@ -5,6 +5,6 @@ export type InputProps = {
   native?: InputHTMLAttributes<HTMLInputElement>;
 }
 
-export type InputRef = {
+export type InputRefs = {
   inputRef: MutableRefObject<HTMLInputElement | null>;
 };
