@@ -16,10 +16,10 @@ import { usePrevious } from '#components/hooks/usePrevious';
 import './styles.sass';
 
 
-export const CheckBox = forwardRef<CheckboxRefs, CheckboxProps>(
+export const Checkbox = forwardRef<CheckboxRefs, CheckboxProps>(
   ({
             native = {},
-     CheckedIcon, UncheckedIcon
+     checkedIcon, uncheckedIcon
            }, ref, ) => {
   const {
     disabled, onChange , checked
@@ -28,7 +28,7 @@ export const CheckBox = forwardRef<CheckboxRefs, CheckboxProps>(
   const checkboxRef = useRef<HTMLInputElement>(null);
   const virtualCheckBoxRef = useRef<HTMLInputElement>(null);
 
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState(false);
   const previousValue = usePrevious(checked);
 
   useImperativeHandle(ref, () => ({ checkboxRef, virtualCheckBoxRef, setValue: setIsChecked }));
@@ -66,25 +66,11 @@ export const CheckBox = forwardRef<CheckboxRefs, CheckboxProps>(
           ns().root
         ])}
       />
-      {checked && typeof CheckedIcon  === 'string' && <img
-      //   className={createClassName([
-      //   disabled ? ns('disabled').value : '',
-      //   ns('checked').value,
-      //   native.className || '',
-      // ])}
-        src={CheckedIcon} alt='checkbox is checked'/>}
-      {checked && typeof CheckedIcon  === 'function' && CheckedIcon}
+      {!disabled && checked && checkedIcon}
 
-      {!checked && typeof UncheckedIcon  === 'string' && <img
-      //   className={createClassName([
-      //   disabled ? ns('disabled').value : '',
-      //   ns('unchecked').value,
-      //   native.className || '',
-      // ])}
-        src={UncheckedIcon} alt='checkbox is not checked'/>}
-      {!checked && typeof UncheckedIcon  === 'function' && UncheckedIcon}
+      {!checked && uncheckedIcon}
   </>
   );
 });
 
-const ns = createNameSpace(Object.keys({ CheckBox })[0]);
+const ns = createNameSpace(Object.keys({ Checkbox })[0]);
