@@ -225,7 +225,7 @@ dependencies:
     specifier: ^5.84.1
     version: 5.88.2(@swc/core@1.4.12)(esbuild@0.18.20)(webpack-cli@5.1.4)
   webpack-cli:
-    specifier: ^5.1.1
+    specifier: ^5.1.4
     version: 5.1.4(webpack-dev-server@4.15.1)(webpack@5.88.2)
   webpack-dev-server:
     specifier: ^4.15.0

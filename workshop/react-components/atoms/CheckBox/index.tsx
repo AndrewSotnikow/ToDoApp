@@ -1,5 +1,4 @@
 import {
-  // CSSProperties,
   ChangeEvent,
   forwardRef,
   useCallback,
@@ -10,39 +9,41 @@ import {
 } from 'react';
 import { createClassName } from '#libraries/dom/createClassName';
 import { createNameSpace } from '#libraries/dom/createNameSpace';
-import type { CheckboxProps,
-  CheckboxRefs } from './types';
+import type {
+  CheckboxProps,
+  CheckboxRefs,
+} from './types';
 import { usePrevious } from '#components/hooks/usePrevious';
 import './styles.sass';
 
-
 export const Checkbox = forwardRef<CheckboxRefs, CheckboxProps>(
   ({
-            native = {},
-     checkedIcon, uncheckedIcon
-           }, ref, ) => {
-  const {
-    disabled, onChange , checked
-  } = native;
+    native = {},
+    customIcon = {},
+  }, ref) => {
+    const {
+      disabled, onChange, checked,
+    } = native;
+    const { checkedIcon, uncheckedIcon } = customIcon;
+    const checkboxRef = useRef<HTMLInputElement>(null);
+    const virtualCheckBoxRef = useRef<HTMLInputElement>(null);
 
-  const checkboxRef = useRef<HTMLInputElement>(null);
-  const virtualCheckBoxRef = useRef<HTMLInputElement>(null);
+    const [isChecked, setIsChecked] = useState(!!checked);
+    const previousValue = usePrevious(checked);
 
-  const [isChecked, setIsChecked] = useState(false);
-  const previousValue = usePrevious(checked);
+    // usage of virtualCheckBoxRef?
+    useImperativeHandle(ref, () => ({ checkboxRef, virtualCheckBoxRef, setValue: setIsChecked }));
 
-  useImperativeHandle(ref, () => ({ checkboxRef, virtualCheckBoxRef, setValue: setIsChecked }));
+    const onChangeHandlerInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+      setIsChecked(!isChecked);
+      onChange?.(e);
+    }, [onChange, isChecked]);
 
-  const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(e.target.checked);
-    onChange && onChange(e);
-  }, [onChange]);
+    const ariaDisabled = typeof native['aria-disabled'] !== 'undefined'
+      ? native['aria-disabled']
+      : disabled;
 
-
-  const ariaDisabled = typeof native['aria-disabled'] !== 'undefined'
-    ? native['aria-disabled']
-    : disabled;
-
+    // usage of this?
     useEffect(() => {
       if (
         typeof previousValue !== 'undefined'
@@ -52,25 +53,35 @@ export const Checkbox = forwardRef<CheckboxRefs, CheckboxProps>(
       }
     }, [checked, previousValue]);
 
-  return (
-    <>
+    return (
+    <div className={createClassName([ns('input-container').value])}>
       <input
         ref={checkboxRef}
         {...native}
         type="checkbox"
         aria-disabled={ariaDisabled}
-        onChange={disabled ? () => null : onChangeHandler}
+        onChange={disabled ? () => null : onChangeHandlerInput}
         checked={isChecked}
         disabled={disabled}
         className={createClassName([
-          ns().root
+          ns().root,
+          disabled ? ns('disabled').value : '',
+          checkedIcon ? ns('hide-default-checkbox').value : '',
         ])}
       />
-      {!disabled && checked && checkedIcon}
-
-      {!checked && uncheckedIcon}
-  </>
-  );
-});
+      <span>{ !disabled && isChecked && checkedIcon && checkedIcon }</span>
+      <span>{ !disabled && !isChecked && uncheckedIcon && uncheckedIcon }</span>
+      <span className={createClassName([
+        ns().root,
+        disabled ? ns('disabled').value : '',
+        checkedIcon ? ns('hide-default-checkbox').value : '',
+      ])}
+      >
+        { disabled && uncheckedIcon && uncheckedIcon }
+      </span>
+    </div>
+    );
+  },
+);
 
 const ns = createNameSpace(Object.keys({ Checkbox })[0]);

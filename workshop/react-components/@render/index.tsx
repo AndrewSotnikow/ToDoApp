@@ -1,8 +1,20 @@
 import { createRoot } from 'react-dom/client';
-import { Input } from '../atoms/Input';
+import { Checkbox } from '../atoms/CheckBox';
+
+const CheckedIcon = () => <span>checkedIcon</span>;
+const UncheckedIcon = () => <span>uncheckedIcon</span>;
 
 createRoot(
   document.getElementById('root') as HTMLDivElement,
 ).render(<>
-  <Input />,<Input native={{ disabled: true }}/>,<Input />
+    <h1>Some text</h1>
+    <Checkbox native={{
+      checked: false,
+      disabled: true,
+    }}
+              customIcon={{
+                checkedIcon: <CheckedIcon />,
+                uncheckedIcon: <UncheckedIcon />,
+              }}
+     />
 </>);

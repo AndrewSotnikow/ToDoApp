@@ -167,6 +167,43 @@ describe('Input tests', () => {
   });
 
   test('debounce test', async () => {
-    // TODO finish tests
+    const onChange = getMockFn();
+
+    const getElement = () => (
+      <Input
+        debounceMs={300}
+        native={{
+          value: 'test-input-value',
+          onChange,
+        }}
+      />
+    );
+
+    render(
+      getElement(),
+      {
+        hydrate: true,
+        container: glob.runInServerEnv(
+          () => {
+            container.innerHTML = renderToString(getElement());
+            return container;
+          },
+        ),
+      },
+    );
+
+    await sleep(0.1);
+
+    const input: HTMLInputElement = screen.getByDisplayValue('test-input-value');
+    expect(input.value).toEqual('test-input-value');
+
+    fireEvent.change(input, { target: { value: 'test' } });
+    expect(onChange.countCalls).toEqual(0);
+
+    await sleep(0.1);
+    expect(onChange.countCalls).toEqual(0);
+
+    await sleep(0.3);
+    expect(onChange.countCalls).toEqual(1);
   });
 });
