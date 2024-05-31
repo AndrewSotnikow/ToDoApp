@@ -1,17 +1,16 @@
 // npx jest -i atoms/CheckBox/test.ts
 import '@testing-library/jest-dom';
-import { Checkbox } from '.';
+
 import { fireEvent, render, screen } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
 import { sleep } from '#libraries/async/sleep';
+import { Checkbox } from './index';
 
 const glob = global as any;
 
-describe('Checkbox test', () => {
+describe('CheckBox test', () => {
   let container: HTMLDivElement;
-  // const CheckedIcon = () => <span>checkedIcon</span>;
-  // const UncheckedIcon = () => <span>uncheckedIcon</span>;
-  //
+
   const getMockFn = (): any => {
     const mockFn = () => {
       // eslint-disable-next-line no-plusplus
@@ -33,10 +32,7 @@ describe('Checkbox test', () => {
     clearDocument();
   });
 
-  test('render checkbox', async () => {
-    // const checkedIcon = 'checkedIcon';
-    // const uncheckedIcon = 'uncheckedIcon';
-
+  test('render CheckBox', async () => {
     const getElement = () => (
       <Checkbox
         native={{
@@ -60,8 +56,8 @@ describe('Checkbox test', () => {
 
     await sleep(0.1);
 
-    const checkbox = screen.getByRole('checkbox', { name: 'checkbox' }) as HTMLInputElement;
-    expect(checkbox).toBeInTheDocument();
+    const CheckBox = screen.getByRole('checkbox', { name: 'checkbox' }) as HTMLInputElement;
+    expect(CheckBox).toBeInTheDocument();
   });
 
   test('should fire onChange test', async () => {
@@ -91,24 +87,22 @@ describe('Checkbox test', () => {
 
     await sleep(0.1);
 
-    const checkbox = screen.getByRole('checkbox', { name: 'checkbox2' });
-    expect(checkbox).toBeInTheDocument();
+    const CheckBox = screen.getByRole('checkbox', { name: 'checkbox2' });
+    expect(CheckBox).toBeInTheDocument();
 
-    fireEvent.click(checkbox);
+    fireEvent.click(CheckBox);
     await sleep(0.1);
 
     expect(onChange.countCalls).toBeGreaterThan(0);
   });
 
-  test('should disable checkbox test', async () => {
+  test('should disable CheckBox test', async () => {
     const onChange = getMockFn();
 
     const getElement = () => (
       <Checkbox
-        customIcon={{
-          checkedIcon: 'checkedIcon',
-          uncheckedIcon: 'uncheckedIcon',
-        }}
+        checkedIcon= 'checkedIcon'
+        uncheckedIcon= 'uncheckedIcon'
         native={{
           'aria-label': 'checkbox2',
           onChange,
@@ -132,11 +126,11 @@ describe('Checkbox test', () => {
 
     await sleep(0.1);
 
-    const checkbox = screen.getByRole('checkbox', { name: 'checkbox2' }) as HTMLInputElement;
+    const CheckBox = screen.getByRole('checkbox', { name: 'checkbox2' }) as HTMLInputElement;
 
     expect(onChange.countCalls).toEqual(0);
 
-    fireEvent.change(checkbox);
+    fireEvent.change(CheckBox);
     await sleep(0.3);
 
     expect(onChange.countCalls).toEqual(0);
@@ -147,10 +141,8 @@ describe('Checkbox test', () => {
 
     const getElement = () => (
       <Checkbox
-        customIcon={{
-          checkedIcon: 'checkedIcon',
-          uncheckedIcon: 'uncheckedIcon',
-        }}
+        checkedIcon='checkedIcon'
+        uncheckedIcon='uncheckedIcon'
         native={{
           'aria-label': 'checkbox2',
           onChange,
@@ -172,12 +164,12 @@ describe('Checkbox test', () => {
     );
 
     await sleep(0.3);
-    const checkbox = screen.getByRole('checkbox', { name: 'checkbox2' });
+    const CheckBox = screen.getByRole('checkbox', { name: 'checkbox2' });
 
     const uncheckedIcon = screen.getByText('uncheckedIcon');
     expect(uncheckedIcon).toBeInTheDocument();
 
-    fireEvent.click(checkbox);
+    fireEvent.click(CheckBox);
     await sleep(0.3);
 
     const checkedIcon = screen.getByText('checkedIcon');

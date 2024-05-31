@@ -8,13 +8,11 @@ createRoot(
   document.getElementById('root') as HTMLDivElement,
 ).render(<>
     <h1>Some text</h1>
-    <Checkbox native={{
-      checked: false,
-      disabled: true,
-    }}
-              customIcon={{
-                checkedIcon: <CheckedIcon />,
-                uncheckedIcon: <UncheckedIcon />,
-              }}
+    <Checkbox
+      native={{
+        checked: false,
+      }}
+      checkedIcon={<CheckedIcon />}
+      uncheckedIcon={<UncheckedIcon />}
      />
 </>);

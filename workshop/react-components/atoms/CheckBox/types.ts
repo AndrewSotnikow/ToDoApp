@@ -1,13 +1,11 @@
 import { InputHTMLAttributes, MutableRefObject, ReactNode } from 'react';
 
-export type CheckboxProps = {
+export type CheckBoxProps = {
   native?: InputHTMLAttributes<HTMLInputElement>;
-  customIcon?: {
-    checkedIcon: ReactNode;
-    uncheckedIcon: ReactNode;
-  }
+  checkedIcon?: ReactNode;
+  uncheckedIcon?: ReactNode;
 }
 
-export type CheckboxRefs = {
-  checkboxRef: MutableRefObject<HTMLInputElement | null>;
+export type CheckBoxRefs = {
+  CheckBoxRef: MutableRefObject<HTMLInputElement | null>;
 };
