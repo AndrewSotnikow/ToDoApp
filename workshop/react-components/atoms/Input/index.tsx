@@ -1,5 +1,5 @@
 import {
-  CSSProperties,
+  // CSSProperties,
   ChangeEvent,
   KeyboardEvent,
   forwardRef,
@@ -12,21 +12,21 @@ import {
 } from 'react';
 import { createClassName } from '#libraries/dom/createClassName';
 import { createNameSpace } from '#libraries/dom/createNameSpace';
-import { getElementWidthWithoutPaddings } from '#libraries/dom/getElementWidthWithoutPaddings';
+// import { getElementWidthWithoutPaddings } from '#libraries/dom/getElementWidthWithoutPaddings';
 import type { InputRefs, InputProps } from './types';
 import { usePrevious } from '#components/hooks/usePrevious';
 import { debounce } from '#libraries/timings/debounce';
 import './styles.sass';
 
-const virtualInputStyles: CSSProperties = {
-  position: 'absolute',
-  opacity: 0,
-  boxSizing: 'border-box',
-  pointerEvents: 'none',
-  top: -999999,
-  left: -999999,
-  whiteSpace: 'pre',
-};
+// const virtualInputStyles: CSSProperties = {
+//   position: 'absolute',
+//   opacity: 0,
+//   boxSizing: 'border-box',
+//   pointerEvents: 'none',
+//   top: -999999,
+//   left: -999999,
+//   whiteSpace: 'pre',
+// };
 
 export const Input = forwardRef<InputRefs, InputProps>(({
   native = {},
@@ -37,13 +37,14 @@ export const Input = forwardRef<InputRefs, InputProps>(({
   } = native;
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const virtualInputRef = useRef<HTMLInputElement>(null);
+  // const virtualInputRef = useRef<HTMLInputElement>(null);
 
   const [inputValue, setInputValue] = useState<string>(value ? String(value) : '');
-  const [isDynamicWidth, setIsDynamicWidth] = useState(false);
+  // const [isDynamicWidth, setIsDynamicWidth] = useState(false);
   const previousValue = usePrevious(value);
 
-  useImperativeHandle(ref, () => ({ inputRef, virtualInputRef, setValue: setInputValue }));
+  // useImperativeHandle(ref, () => ({ inputRef, virtualInputRef, setValue: setInputValue }));
+  useImperativeHandle(ref, () => ({ inputRef, setValue: setInputValue }));
 
   const debouncedOnChange = useMemo(
     () => debounce(onChange || (() => {}), debounceMs),
@@ -65,33 +66,33 @@ export const Input = forwardRef<InputRefs, InputProps>(({
     }
   }, [onKeyDown]);
 
-  useEffect(() => {
-    if (getElementWidthWithoutPaddings(inputRef.current) > 0) {
-      return () => {};
-    }
-    setIsDynamicWidth(true);
+  // useEffect(() => {
+  //   if (getElementWidthWithoutPaddings(inputRef.current) > 0) {
+  //     return () => {};
+  //   }
+  //   setIsDynamicWidth(true);
 
-    if (!virtualInputRef.current) {
-      return () => {};
-    }
-    const virtualInput = virtualInputRef.current;
-    const input = inputRef.current as HTMLInputElement;
-    const computedInputStyles = window.getComputedStyle(input, null);
+  //   if (!virtualInputRef.current) {
+  //     return () => {};
+  //   }
+  //   const virtualInput = virtualInputRef.current;
+  //   const input = inputRef.current as HTMLInputElement;
+  //   const computedInputStyles = window.getComputedStyle(input, null);
 
-    virtualInput.style.fontSize = computedInputStyles.fontSize;
-    virtualInput.style.fontFamily = computedInputStyles.fontFamily;
-    virtualInput.style.fontStyle = computedInputStyles.fontStyle;
-    virtualInput.style.letterSpacing = computedInputStyles.letterSpacing;
-    virtualInput.style.textTransform = computedInputStyles.textTransform;
-    virtualInput.style.fontWeight = computedInputStyles.fontWeight;
+  //   virtualInput.style.fontSize = computedInputStyles.fontSize;
+  //   virtualInput.style.fontFamily = computedInputStyles.fontFamily;
+  //   virtualInput.style.fontStyle = computedInputStyles.fontStyle;
+  //   virtualInput.style.letterSpacing = computedInputStyles.letterSpacing;
+  //   virtualInput.style.textTransform = computedInputStyles.textTransform;
+  //   virtualInput.style.fontWeight = computedInputStyles.fontWeight;
 
-    const observer = new ResizeObserver(() => {
-      input.style.width = `${virtualInput.getBoundingClientRect().width}px`;
-    });
-    observer.observe(virtualInput);
+  //   const observer = new ResizeObserver(() => {
+  //     input.style.width = `${virtualInput.getBoundingClientRect().width}px`;
+  //   });
+  //   observer.observe(virtualInput);
 
-    return () => observer.disconnect();
-  }, [isDynamicWidth]);
+  //   return () => observer.disconnect();
+  // }, [isDynamicWidth]);
 
   useEffect(() => {
     if (
@@ -132,7 +133,7 @@ export const Input = forwardRef<InputRefs, InputProps>(({
         onKeyDown={onKeyDownHandler}
         value={inputValue}
       />
-      {isDynamicWidth && (
+      {/* {isDynamicWidth && (
         <span
           role="presentation"
           aria-hidden={true}
@@ -146,7 +147,7 @@ export const Input = forwardRef<InputRefs, InputProps>(({
         >
           {inputValue}
         </span>
-      )}
+      )} */}
     </>
   );
 });

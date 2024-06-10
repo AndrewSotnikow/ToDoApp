@@ -7,5 +7,5 @@ export type CheckBoxProps = {
 }
 
 export type CheckBoxRefs = {
-  CheckBoxRef: MutableRefObject<HTMLInputElement | null>;
+  CheckBoxRef: MutableRefObject<HTMLInputElement | null>; //CheckBoxRef -> checkBoxRef
 };

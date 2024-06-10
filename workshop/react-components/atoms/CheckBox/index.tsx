@@ -22,10 +22,10 @@ export const Checkbox = forwardRef<CheckBoxRefs, CheckBoxProps>(
     checkedIcon, uncheckedIcon,
   }, ref) => {
     const {
-      disabled, onChange, checked,
+      disabled, onChange, checked, className = ''
     } = native;
 
-    const CheckBoxRef = useRef<HTMLInputElement>(null);
+    const CheckBoxRef = useRef<HTMLInputElement | null>(null);
     const virtualCheckBoxRef = useRef<HTMLInputElement>(null);
 
     const [isChecked, setIsChecked] = useState(!!checked);
@@ -52,33 +52,38 @@ export const Checkbox = forwardRef<CheckBoxRefs, CheckBoxProps>(
     }, [checked, previousValue]);
 
     return (
-    <div className={createClassName([ns('input-container').value])}>
-      <span>{ !disabled && isChecked && checkedIcon && checkedIcon }</span>
-      <span>{ !disabled && !isChecked && uncheckedIcon && uncheckedIcon }</span>
-      <span className={createClassName([
-        ns().root,
-        disabled ? ns('disabled').value : '',
-        checkedIcon ? ns('hide-default-checkbox').value : '',
-      ])}
-      >
-        { disabled && uncheckedIcon && uncheckedIcon }
-      </span>
-
-      <input
-        ref={CheckBoxRef}
-        {...native}
-        type="checkbox"
-        aria-disabled={ariaDisabled}
-        onChange={disabled ? () => null : onChangeHandlerInput}
-        checked={isChecked}
-        disabled={disabled}
-        className={createClassName([
+      <div className={createClassName([
+        className, // .test
+        ns('input-container').value  // .tests.checkbox--input-container
+      ])}>
+        <span>{!disabled && isChecked && checkedIcon && checkedIcon}</span>
+        <span>{!disabled && !isChecked && uncheckedIcon && uncheckedIcon}</span>
+        <span className={createClassName([
+          className,
           ns().root,
           disabled ? ns('disabled').value : '',
-          (checkedIcon || uncheckedIcon) ? ns('hide-default-checkbox').value : '',
+          checkedIcon ? ns('hide-default-checkbox').value : '',
         ])}
-      />
-    </div>
+        >
+          {disabled && uncheckedIcon && uncheckedIcon}
+        </span>
+
+        <input
+          ref={CheckBoxRef}
+          {...native}
+          type="checkbox"
+          aria-disabled={ariaDisabled}
+          onChange={disabled ? () => null : onChangeHandlerInput}
+          checked={isChecked}
+          disabled={disabled}
+          className={createClassName([
+            className,
+            ns().root,  // .tests.checbox
+            disabled ? ns('disabled').value : '',
+            (checkedIcon || uncheckedIcon) ? ns('hide-default-checkbox').value : '',
+          ])}
+        />
+      </div>
     );
   },
 );
