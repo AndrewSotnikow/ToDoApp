@@ -1,0 +1,19 @@
+$bg-color: #007db4
+$bg-color--hover: #006b98
+$bg-color--active: #005073
+$border-color--focus: #56cdff
+
+#root, #docs-root, #storybook-root, #storybook-docs-root
+  .theme-blue
+    color: #fff
+    background-color: $bg-color
+
+    &:hover
+      background-color: $bg-color--hover
+
+    &:active
+      background-color: $bg-color--active
+
+    &:focus,
+    &.focused
+      outline: 2px solid $border-color--focus

@@ -1,0 +1,17 @@
+$rootClassName: 'button'
+$disabled: 'disabled'
+$content: 'content'
+
+.#{$rootClassName}
+  cursor: pointer
+  display: inline-flex
+  align-items: center
+  user-select: none
+  border: 0
+  outline: none
+
+  &--#{$disabled}
+    cursor: default
+
+  &--#{$content}
+    display: inline-flex

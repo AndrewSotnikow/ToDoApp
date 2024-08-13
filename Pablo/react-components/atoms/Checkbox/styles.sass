@@ -1,0 +1,47 @@
+$rootClassName: 'checkbox'
+$disabled: 'disabled'
+$input: 'input'
+$icon: 'icon'
+$nativeIcon: 'native-icon'
+
+.#{$rootClassName}
+  position: relative
+  box-sizing: border-box
+  display: inline-flex
+  width: 10px
+  height: 10px
+
+  &:not(&--#{disabled})
+    cursor: pointer
+
+  &--#{$input}
+    position: absolute
+    top: 0
+    left: 0
+    display: inline-flex
+    box-sizing: border-box
+    border: 0
+    outline: none
+    z-index: 1
+    opacity: 0
+    margin: 0
+    width: 100%
+    height: 100%
+
+    &:not(&--#{$disabled})
+      cursor: pointer
+
+    &--#{$nativeIcon}
+      opacity: 1
+
+  &--#{$icon}
+    position: absolute
+    top: 0
+    left: 0
+    user-select: none
+    box-sizing: border-box
+    display: inline-flex
+    justify-content: center
+    align-items: center
+    width: 100%
+    height: 100%

@@ -1,0 +1,26 @@
+@import "#styles/sass/animations/press.sass"
+@import "#styles/sass/common.sass"
+@import "./themes/blue"
+
+$disabled: 'disabled'
+$focused: 'focused'
+$btnAnimation: 'btn-animation'
+
+#root, #docs-root, #storybook-root, #storybook-docs-root
+  font-size: 14px
+
+  &,
+  *
+    font-family: Arial
+
+  .storybook--component--presentation
+    .#{$disabled}
+      color: #808080FF
+      background-color: #dedede
+
+      .icon
+        fill: #808080FF
+
+  .#{$btnAnimation}
+    &:not(.#{$disabled}):active
+      animation: button-press-animation 0.2s ease-in-out

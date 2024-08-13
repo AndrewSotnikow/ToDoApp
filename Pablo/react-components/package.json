@@ -1,0 +1,21 @@
+{
+  "name": "react-components",
+  "version": "1.0.0",
+  "main": "index.js",
+  "engineStrict": true,
+  "engines": {
+    "node": ">=20.5.0"
+  },
+  "repository": "git@gitlab.com:pavel.it.couch/react-components.git",
+  "author": "Pavel Nedzelskiy <pavel.nedzelskiy@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "eslint": "npx eslint --quiet .",
+    "prepare": "npx husky install",
+    "storybook": "npx storybook dev -p 6006 --no-open",
+    "storybook:build": "npx storybook build",
+    "stylelint": "npx stylelint \"**/*.{css,scss,sass,html}\" --allow-empty-input",
+    "test": "npx jest",
+    "tests": "npx concurrently -c \"green,gray,blue\" -n \"jest,eslint,stylelint\" \"pnpm test\" \"pnpm eslint\" \"pnpm stylelint\""
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "#styles/*": ["../styles/*"],
+      "#components/connect/*": ["./connect/*"],
+      "#components/storybook/*": ["./.storybook/*"],
+      "#components/*": ["./*"],
+      "#libraries/*": [
+        "../js-libraries/@browser/*",
+        "../js-libraries/*"
+      ],
+      "#packages/*": ["../js-packages/*"]
+    }
+  },
+  "exclude": [
+    "**/*.js",
+    "node_modules",
+    "tmp"
+  ],
+  "extends": "../js-packages/tsconfig.json"
+}

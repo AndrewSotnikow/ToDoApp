@@ -1,0 +1,21 @@
+{
+  "name": "js-libraries",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@gitlab.com:pavel.it.couch/js-libraries.git",
+  "author": "Pavel Nedzelskiy <pavel.nedzelskiy@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "eslint": "npx eslint --quiet .",
+    "sync": "npx ts-node .scripts/sync-envs.ts",
+    "prepare": "husky install",
+    "stylelint": "npx stylelint \"**/*.{css,scss,sass,html}\" --allow-empty-input",
+    "test": "npx jest",
+    "test-browser": "npx playwright test",
+    "test-node-server": "npx nodemon @node/smocki/index.ts --watch *.*",
+    "tests": "npx concurrently -c \"cyan,green,gray\" -n \"node,browser,eslint\" \"pnpm test\" \"pnpm test-browser\" \"pnpm eslint\""
+  }
+}
