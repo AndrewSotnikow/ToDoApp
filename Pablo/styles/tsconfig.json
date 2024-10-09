@@ -1,0 +1,9 @@
+{
+  "exclude": [
+    "**/*.js",
+    "**/*.mjs",
+    "node_modules",
+    "tmp"
+  ],
+  "extends": "../js-packages/tsconfig.json"
+}

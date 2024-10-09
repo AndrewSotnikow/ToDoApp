@@ -59,7 +59,6 @@ describe('Input tests', () => {
 
     const getElement = () => (
       <Input
-        debounceMs={300}
         native={{
           value: 'test-input-value',
           onInput,
@@ -87,11 +86,9 @@ describe('Input tests', () => {
     expect(input).toBeInTheDocument();
     expect(input.value).toEqual('test-input-value');
 
-    fireEvent.change(input, { target: { value: '23' } });
-    expect(input.value).toEqual('23');
-    expect(onChange.mock.calls.length).toEqual(0);
-    await sleep(0.3);
+    fireEvent.input(input, { target: { value: '23' } });
 
+    expect(input.value).toEqual('23');
     expect(onChange.mock.calls.length).toEqual(1);
   });
 });

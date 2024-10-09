@@ -23,7 +23,11 @@ export const Input = forwardRef<InputRefs, InputProps>(({
   const [inputValue, setInputValue] = useState<string>(value ? String(value) : '');
   const previousValue = usePrevious(value);
 
-  useImperativeHandle(ref, () => ({ inputRef, setValue: setInputValue }));
+  useImperativeHandle(ref, () => ({
+    inputRef,
+    setValue: setInputValue,
+    getValue: () => inputValue,
+  }));
 
   useEffect(() => {
     const nValue = String(value);

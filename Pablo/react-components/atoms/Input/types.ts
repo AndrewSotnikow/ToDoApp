@@ -7,4 +7,5 @@ export type InputProps = {
 export type InputRefs = {
   inputRef: MutableRefObject<HTMLInputElement | null>;
   setValue: (value: string) => void;
+  getValue: () => string;
 };

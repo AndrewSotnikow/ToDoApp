@@ -1,4 +1,3 @@
-// const { rules } = require('@html-eslint/eslint-plugin/types/configs/recommended');
 const { join } = require('path');
 
 const tsConfigFile = require(join(__dirname, 'tsconfig.json'));
@@ -10,8 +9,6 @@ const extendJsStandardsRules = [
 
 const javascriptRules = {
   'no-sparse-arrays': 1,
-  // 'local-rules/lib-imports-order': 1,
-  // 'local-rules/style-imports-order': 2,
   'no-plusplus': 0,
   'arrow-body-style': 0,
   'no-nested-ternary': 0,
@@ -30,22 +27,6 @@ const javascriptRules = {
   'react-hooks/exhaustive-deps': 1,
   'class-methods-use-this': 1,
 };
-
-const html = [
-  {
-    files: ['*.html'],
-    parser: '@html-eslint/parser',
-    plugins: [
-      '@html-eslint',
-      'html',
-    ],
-    extends: ['plugin:@html-eslint/recommended'],
-    rules: {
-      '@html-eslint/no-duplicate-id': 'error',
-      '@html-eslint/indent': ['error', 2],
-    },
-  },
-];
 
 const json = [
   {
@@ -103,7 +84,6 @@ const typescript = [
       '@typescript-eslint/no-unused-vars': 1,
       '@typescript-eslint/no-unsafe-function-type': 1,
       '@typescript-eslint/no-require-imports': 1,
-      // '@typescript-eslint/ban-types': 1,
     },
     plugins: ['@typescript-eslint'],
     settings: {
@@ -156,7 +136,6 @@ module.exports = {
   overrides: [
     ...javascript,
     ...typescript,
-    // ...html,
     ...json,
   ],
 };

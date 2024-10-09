@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "eslint": "npx eslint --quiet .",
+    "stylelint": "npx stylelint \"**/*.{css,scss,sass,html}\" --allow-empty-input",
+    "test": "npx jest"
+  }
+}

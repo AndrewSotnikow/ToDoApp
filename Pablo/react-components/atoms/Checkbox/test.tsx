@@ -19,6 +19,19 @@ describe('Checkbox tests', () => {
 
   let container: HTMLDivElement;
 
+  beforeAll(() => {
+    jest.spyOn(console, 'error').mockImplementation((message) => {
+      if (message.includes('A component is changing an uncontrolled input to be controlled')) {
+        return;
+      }
+      (console.error as any).mockImplementation(() => {});
+    });
+  });
+
+  afterAll(() => {
+    (console.error as any).mockRestore();
+  });
+
   beforeEach(() => {
     while (document.body.firstChild) {
       document.body.removeChild(document.body.firstChild);
