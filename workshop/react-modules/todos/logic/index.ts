@@ -8,8 +8,8 @@ class TodosLogic {
     }
 
     addTodo(todos: ToDos, todo: ToDo): ToDo[] {
-        const isTodoExist = this.isTodoAlreadyExist([], 'name')
-        return isTodoExist ? [...todos, todo] : todos
+        const isTodoExist = this.isTodoAlreadyExist(todos, todo.title)
+        return isTodoExist ? todos :  [...todos, todo]
     }
 
     createTodo(title: ToDo['title']): ToDo {
